@@ -137,55 +137,6 @@ for query in queries:
         df.to_csv(f"data/{query}_{table_name}.csv", index=False)
 ```
 
-## 📅 Scheduling
-
-### Using Cron (Linux/Mac)
-
-```bash
-# Edit crontab
-crontab -e
-
-# Run daily at 2 AM
-0 2 * * * cd /path/to/project && /path/to/venv/bin/python ebay_pipeline.py
-
-# Run weekly on Sundays at 3 AM
-0 3 * * 0 cd /path/to/project && /path/to/venv/bin/python ebay_pipeline_weekly.py
-```
-
-### Using Task Scheduler (Windows)
-
-1. Open Task Scheduler
-2. Create Basic Task
-3. Set trigger (daily/weekly)
-4. Action: Start a program
-5. Program: `python.exe`
-6. Arguments: `C:\path\to\ebay_pipeline.py`
-
-### Using Apache Airflow
-
-```python
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-from datetime import datetime, timedelta
-
-def run_ebay_pipeline_task():
-    from ebay_pipeline import run_ebay_pipeline
-    # ... pipeline code
-
-dag = DAG(
-    'ebay_data_pipeline',
-    default_args={'owner': 'airflow'},
-    schedule_interval='0 2 * * *',  # Daily at 2 AM
-    start_date=datetime(2025, 1, 1),
-)
-
-task = PythonOperator(
-    task_id='extract_ebay_data',
-    python_callable=run_ebay_pipeline_task,
-    dag=dag,
-)
-```
-
 ## 🔧 API Rate Limits
 
 | API | Limit | Notes |
@@ -201,62 +152,9 @@ You can safely run:
 - Multiple products: ✅ 800+ categories/day
 - Real-time updates: ✅ Every few minutes if needed
 
-## 📊 Output
-
-### CSV Files
-
-Each table is exported to CSV:
-- `ebay_listings.csv`
-- `ebay_categories.csv`
-- `ebay_sellers.csv`
-- `ebay_transactions.csv`
-- `ebay_watch_count.csv`
-- `ebay_price_history.csv`
-- `ebay_shipping_options.csv`
-- `ebay_item_specifics.csv`
-
-### Data Warehouse Loading
-
-```python
-# Example: Load to PostgreSQL
-import pandas as pd
-from sqlalchemy import create_engine
-
-engine = create_engine(os.getenv("DATABASE_URL"))
-
-for table_name, df in tables.items():
-    df.to_sql(table_name, engine, if_exists='append', index=False)
-```
-
-## 🧪 Testing
-
-```bash
-# Run tests
-pytest tests/
-
-# Run with coverage
-pytest --cov=ebay_pipeline tests/
-```
-
 ## 📝 License
 
 MIT License - see [LICENSE](LICENSE) file for details
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📧 Contact
-
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
-
-Project Link: [https://github.com/yourusername/ebay-data-pipeline](https://github.com/yourusername/ebay-data-pipeline)
 
 ## 🙏 Acknowledgments
 
