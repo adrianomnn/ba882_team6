@@ -79,8 +79,6 @@ EBAY_CLIENT_ID=your_client_id_here
 EBAY_CLIENT_SECRET=your_client_secret_here
 EBAY_APP_ID=your_app_id_here
 
-DEFAULT_SEARCH_QUERY=laptop
-DEFAULT_LIMIT=20
 ```
 
 **⚠️ IMPORTANT**: Never commit your `.env` file to Git! It's already listed in `.gitignore`.
